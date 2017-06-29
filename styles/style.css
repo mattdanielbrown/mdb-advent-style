@@ -1,0 +1,694 @@
+/*
+ *	Centers text alignment (via `text-align: center`).
+ *	When `text-align: center` is set, the left and right margins should be set to AUTO.
+ */
+body {
+  position: relative;
+}
+
+.demo-container {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/*
+ * Quickly arrange child elements using flex.
+ *
+ *	@param($direction, $distribution)
+ *
+ *		$direction: Sets the axis the items are aligned to.
+ *			[v, vertical, c, column | h, horizontal, r, row]  (!optional - default = v)
+ *			... amounts to `flex-direction:` ...
+ *
+ *		$distribution: Sets how items are arranged along main axis.
+ *			[c, center | sa, a, space-around | sb, b, space-between]  (!optional - default = c)
+ *			... sets the `justify-content:` property...
+ *
+ *	[Example Usage:]
+ *
+ *  .class {
+ *		@include flexArrange(vertical, sa);
+ *  }	
+ *
+ *	---OUTPUTS TO:
+ *
+ *	.class {
+ * 		display: flex;
+ * 		align-items: center;
+ * 		align-content: center;
+ * 		flex-direction: column;
+ * 		justify-content: space-around;
+ *      }
+ */
+/*
+ * Set to fullscree size mixin
+ *
+ *	@param ($exactHeight: false)
+ *
+ *		$exactHeight: [true | false ] -
+ *			Whether or not the element must only be the exact height of
+ *			the window, and no more.
+ *			(!Optional) default = false
+ *			... if false, `min-height` property is set to 100vh, so element can be taller
+ *				than the window and must only be at least that tall.
+ *			... if true, `height` property is set to 100vh, so the element must be
+ *				EXACTLY the height of the window, NO MORE, NO LESS.
+ */
+/*
+ *	Set margins/and/or/paddings to zero
+ *
+ *	@param($marginPadding: both)
+ *
+ *		$marginPadding: [ m, margin | p, padding | b, both]  - (!Optional: default=both)
+ *			...Sets which of the two (margins, padding, or both) to be set to zero.
+ */
+/* --- JUST FOR DEMO PURPOSES --- */
+.demo-container {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -ms-flex-line-pack: center;
+      align-content: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+}
+
+/* --- MAIN BASE STYLES --- */
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 62.5%;
+  -webkit-text-size-adjust: none;
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+  text-rendering: optimizeLegibility !important;
+}
+@media (max-width: 30em) {
+  html {
+    font-size: 50%;
+  }
+}
+@media (min-width: 62.5em) {
+  html {
+    font-size: 70%;
+  }
+}
+
+body {
+  font-size: 1.6rem;
+  font-family: 'Avenir Next', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 700;
+  line-height: 1.5;
+  letter-spacing: -1px;
+}
+
+h1 {
+  font-size: 3.15733em;
+}
+
+h2 {
+  font-size: 2.36859em;
+}
+
+h3 {
+  font-size: 1.77689em;
+}
+
+h4 {
+  font-size: 1.333em;
+  font-weight: 400;
+  letter-spacing: normal;
+}
+
+h5 {
+  font-size: 1em;
+  font-weight: 300;
+  letter-spacing: normal;
+}
+
+h6 {
+  font-size: 0.75019em;
+  font-weight: 700;
+  letter-spacing: normal;
+  color: darkgray;
+}
+
+a {
+  text-decoration: none;
+}
+
+img,
+embed,
+object,
+video,
+svg {
+  max-width: 100%;
+}
+
+input,
+textarea {
+  font-family: inherit;
+  font-size: 1.6rem;
+}
+
+.container {
+  /* this class is used to give a max-width to the element it is applied to, 
+  and center it horizontally when it reaches that max-width */
+  width: 90%;
+  max-width: 1170px;
+  margin: 0 auto;
+}
+.container::after {
+  clear: both;
+  content: "";
+  display: table;
+}
+
+/* --- FOR THIS PEN --- */
+section {
+  min-height: 50vh;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  margin-bottom: 10rem;
+}
+section .container header h1,
+section .container header h2,
+section .container header h3,
+section .container header h4,
+section .container header h5,
+section .container header h6 {
+  text-align: left;
+  width: 100%;
+  color: #838f92;
+  margin-bottom: 2rem;
+  font-weight: 600;
+}
+section .container header p {
+  margin-top: -1rem;
+  margin-bottom: 3rem;
+  text-align: left;
+  font-size: 1.125rem;
+  color: #4d5c65;
+}
+
+section:nth-child(odd) {
+  background: #f2f6f7;
+}
+
+#section__header {
+  background: #d6e1e4;
+  width: 100%;
+  height: 100vh;
+  margin-bottom: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -ms-flex-line-pack: center;
+      align-content: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+#section__header .container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -ms-flex-line-pack: center;
+      align-content: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+#section__header .container h1,
+#section__header .container h2,
+#section__header .container h3,
+#section__header .container h4,
+#section__header .container h5,
+#section__header .container h6 {
+  margin: 0;
+  color: rgba(29, 46, 54, 0.8);
+}
+
+#section__links {
+  text-align: center;
+  margin: auto;
+  margin-bottom: 5rem;
+}
+#section__links .container {
+  text-align: center;
+  margin: auto;
+}
+#section__links .container ul {
+  text-align: center;
+  margin: auto;
+}
+#section__links .container ul li {
+  text-align: center;
+  margin: auto;
+}
+
+#section__buttons {
+  min-height: initial;
+  padding-bottom: 0;
+}
+#section__buttons .container .unstyled-list, #section__buttons .container .horizontal-list {
+  padding: 0;
+  margin-bottom: 0;
+}
+
+#section__links {
+  min-height: initial;
+  padding-bottom: 8rem;
+  padding-top: 2rem;
+}
+
+#section__footers {
+  margin-bottom: 0;
+}
+
+button,
+input[type=submit] {
+  appearence: none;
+  padding: 1.3rem 2rem 1.1rem;
+  background: #31BCC9;
+  border: #31BCC9 solid 1px;
+  color: #fff;
+  border-radius: 3px;
+  display: block;
+  -webkit-transition: all 200ms;
+  transition: all 200ms;
+  cursor: pointer;
+  font-weight: 600;
+}
+button:hover,
+input[type=submit]:hover, button:focus,
+input[type=submit]:focus {
+  background: #2aa0ab;
+  border-color: #2aa0ab;
+  outline: none;
+}
+button:active,
+input[type=submit]:active {
+  outline: none;
+  background: #1D2E36;
+  border-color: #1D2E36;
+  -webkit-transform: scale(0.98);
+  transform: scale(0.98);
+}
+@media (min-width: 30em) {
+  button,
+  input[type=submit] {
+    min-width: 120px;
+  }
+}
+
+.outline {
+  background: transparent;
+  color: #31BCC9;
+  font-weight: 500;
+}
+.outline:hover, .outline:focus {
+  background: transparent;
+  color: #2aa0ab;
+  border-color: #2aa0ab;
+  outline: none;
+}
+.outline:active {
+  outline: none;
+  background: transparent;
+  color: #1D2E36;
+  border-color: #1D2E36;
+  -webkit-transform: scale(0.98);
+  transform: scale(0.98);
+}
+
+.button-group {
+  list-style: none;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -ms-flex-line-pack: center;
+      align-content: center;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  text-align: left;
+  padding: 0;
+  margin-left: 0;
+}
+.button-group ul {
+  text-align: left;
+  margin-left: 0;
+}
+.button-group li {
+  list-style: none;
+  margin-right: 2rem;
+}
+.button-group li button {
+  margin: 0;
+}
+
+a {
+  appearence: none;
+  cursor: pointer;
+  -webkit-transition: all 200ms;
+  transition: all 200ms;
+  color: #31BCC9;
+}
+a:link {
+  color: #31BCC9;
+}
+a:visted {
+  color: #31BCC9;
+}
+a:hover, a:focus {
+  outline: none;
+  color: #2aa0ab;
+}
+a:active {
+  outline: none;
+  color: #1d2e36;
+}
+
+nav {
+  list-style: none;
+  margin: auto;
+  background: #1d2e36;
+  min-height: 80px;
+  vertical-align: middle;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -ms-flex-line-pack: center;
+      align-content: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
+}
+nav ul {
+  vertical-align: middle;
+  list-style: inherit;
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  text-align: right;
+  margin: auto 2rem auto auto !important;
+}
+nav ul li {
+  vertical-align: middle;
+  text-align: right !important;
+  margin-right: 2rem !important;
+  padding: 0;
+  list-style: inherit;
+  width: auto;
+}
+nav ul li a {
+  vertical-align: middle;
+  text-align: center !important;
+  margin: auto !important;
+}
+
+.true-nav {
+  position: fixed;
+  z-index: 5;
+  top: 0;
+  left: 0;
+  width: 100%;
+  margin: 0;
+  background: #1f2e36;
+  padding-right: 5rem;
+  font-weight: 500;
+}
+.true-nav ul li {
+  margin-left: 2rem !important;
+}
+.true-nav ul li a {
+  color: white;
+  font-weight: 600;
+}
+
+.active {
+  color: #269dad !important;
+}
+
+.unstyled-list, .horizontal-list {
+  list-style: none;
+  text-decoration: none;
+}
+.unstyled-list li, .horizontal-list li {
+  list-style: none;
+  text-decoration: none;
+  margin-bottom: 1rem;
+}
+
+.horizontal-list {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -ms-flex-line-pack: center;
+      align-content: center;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  text-align: center;
+  margin: auto;
+  padding: 0;
+}
+
+input[type="color"], input[type="date"], input[type="datetime"], input[type="datetime-local"], input[type="email"], input[type="month"], input[type="number"], input[type="password"], input[type="search"], input[type="tel"], input[type="text"], input[type="time"], input[type="url"], input[type="week"], input:not([type]), textarea {
+  width: calc(50% - 1rem);
+  display: inline;
+  height: 48px;
+  line-height: 1.5;
+  border: 1px solid #d6e1e4;
+  color: #1c2e36;
+  padding: 3px 15px 0;
+  margin: 0;
+  border-radius: 3px;
+  -webkit-transition: all 200ms;
+  transition: all 200ms;
+}
+input[type="color"]::-webkit-input-placeholder, input[type="date"]::-webkit-input-placeholder, input[type="datetime"]::-webkit-input-placeholder, input[type="datetime-local"]::-webkit-input-placeholder, input[type="email"]::-webkit-input-placeholder, input[type="month"]::-webkit-input-placeholder, input[type="number"]::-webkit-input-placeholder, input[type="password"]::-webkit-input-placeholder, input[type="search"]::-webkit-input-placeholder, input[type="tel"]::-webkit-input-placeholder, input[type="text"]::-webkit-input-placeholder, input[type="time"]::-webkit-input-placeholder, input[type="url"]::-webkit-input-placeholder, input[type="week"]::-webkit-input-placeholder, input:not([type])::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
+  font-weight: 300;
+}
+input[type="color"]::-moz-placeholder, input[type="date"]::-moz-placeholder, input[type="datetime"]::-moz-placeholder, input[type="datetime-local"]::-moz-placeholder, input[type="email"]::-moz-placeholder, input[type="month"]::-moz-placeholder, input[type="number"]::-moz-placeholder, input[type="password"]::-moz-placeholder, input[type="search"]::-moz-placeholder, input[type="tel"]::-moz-placeholder, input[type="text"]::-moz-placeholder, input[type="time"]::-moz-placeholder, input[type="url"]::-moz-placeholder, input[type="week"]::-moz-placeholder, input:not([type])::-moz-placeholder, textarea::-moz-placeholder {
+  font-weight: 300;
+}
+input[type="color"]:-moz-placeholder, input[type="date"]:-moz-placeholder, input[type="datetime"]:-moz-placeholder, input[type="datetime-local"]:-moz-placeholder, input[type="email"]:-moz-placeholder, input[type="month"]:-moz-placeholder, input[type="number"]:-moz-placeholder, input[type="password"]:-moz-placeholder, input[type="search"]:-moz-placeholder, input[type="tel"]:-moz-placeholder, input[type="text"]:-moz-placeholder, input[type="time"]:-moz-placeholder, input[type="url"]:-moz-placeholder, input[type="week"]:-moz-placeholder, input:not([type]):-moz-placeholder, textarea:-moz-placeholder {
+  font-weight: 300;
+}
+input[type="color"]:-ms-input-placeholder, input[type="date"]:-ms-input-placeholder, input[type="datetime"]:-ms-input-placeholder, input[type="datetime-local"]:-ms-input-placeholder, input[type="email"]:-ms-input-placeholder, input[type="month"]:-ms-input-placeholder, input[type="number"]:-ms-input-placeholder, input[type="password"]:-ms-input-placeholder, input[type="search"]:-ms-input-placeholder, input[type="tel"]:-ms-input-placeholder, input[type="text"]:-ms-input-placeholder, input[type="time"]:-ms-input-placeholder, input[type="url"]:-ms-input-placeholder, input[type="week"]:-ms-input-placeholder, input:not([type]):-ms-input-placeholder, textarea:-ms-input-placeholder {
+  font-weight: 300;
+}
+input[type="color"]:focus, input[type="date"]:focus, input[type="datetime"]:focus, input[type="datetime-local"]:focus, input[type="email"]:focus, input[type="month"]:focus, input[type="number"]:focus, input[type="password"]:focus, input[type="search"]:focus, input[type="tel"]:focus, input[type="text"]:focus, input[type="time"]:focus, input[type="url"]:focus, input[type="week"]:focus, input:not([type]):focus, textarea:focus {
+  outline: none;
+  background: #f2f6f7;
+}
+@incude mq($until: 480px) {
+  input[type="color"], input[type="date"], input[type="datetime"], input[type="datetime-local"], input[type="email"], input[type="month"], input[type="number"], input[type="password"], input[type="search"], input[type="tel"], input[type="text"], input[type="time"], input[type="url"], input[type="week"], input:not([type]), textarea {
+    height: 10% !important;
+    max-height: 36px !important;
+    padding: 0 15px 0 !important;
+  }
+}
+textarea {
+  resize: none;
+  width: 100%;
+  height: 100%;
+  padding: 15px 15px 0 !important;
+  margin: 0;
+}
+
+fieldset {
+  border: none;
+  padding: 0;
+  margin: 2rem 0;
+}
+@media (max-width: 30em) {
+  fieldset {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+}
+
+input[type=text] {
+  float: left;
+}
+
+input[type=email] {
+  float: right;
+}
+
+@media (max-width: 30em) {
+  input[type=text],
+  input[type=email] {
+    width: 100%;
+    display: block;
+    float: none;
+    margin-bottom: 1rem;
+    height: 36px !important;
+  }
+}
+
+input[type=submit] {
+  margin-top: 0;
+}
+@media (max-width: 30em) {
+  input[type=submit] {
+    margin-top: 1rem;
+    width: 100%;
+  }
+}
+
+form {
+  margin: 2rem auto;
+  width: 90%;
+}
+@media (max-width: 30em) {
+  form {
+    width: 100%;
+  }
+}
+@media (min-width: 62.5em) {
+  form {
+    width: 80%;
+    max-width: 600px;
+  }
+}
+
+#section__typography {
+  padding-bottom: 1rem !important;
+  padding-top: 1rem !important;
+  margin-bottom: 0;
+}
+#section__typography .container p {
+  text-align: left;
+  color: #1d2e36;
+}
+#section__typography .container h1,
+#section__typography .container h2,
+#section__typography .container h3,
+#section__typography .container h4,
+#section__typography .container h5,
+#section__typography .container h6 {
+  text-align: left;
+  color: #1d2e36;
+}
+#section__typography .container h1 {
+  margin-top: 0;
+  line-height: 1;
+  margin-bottom: 0;
+}
+#section__typography .container header h3 {
+  color: #838f92 !important;
+  font-weight: 600 !important;
+}
+
+.detail-text {
+  margin-top: 2rem;
+  margin-bottom: 4rem;
+  font-size: 1.125rem;
+  color: #a4b3b8 !important;
+  font-style: italic;
+}
+
+footer {
+  background: #4d5c65;
+  color: white;
+  padding: 2rem 0;
+  text-align: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -ms-flex-line-pack: center;
+      align-content: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+footer p {
+  font-size: 1.125rem;
+  line-height: 1;
+  margin: 0 auto;
+  text-align: center;
+}
