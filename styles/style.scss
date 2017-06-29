@@ -1,0 +1,710 @@
+@import "bourbon";
+// –––––––––––––––––––––––––––––––––––––––––––––––––
+//	VARIABLES
+// –––––––––––––––––––––––––––––––––––––––––––––––––
+//	PLACEHOLDERS
+
+/*
+ *	Centers text alignment (via `text-align: center`).
+ *	When `text-align: center` is set, the left and right margins should be set to AUTO.
+ */
+body {
+      position: relative;
+  }
+%centerText {
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+// –––––––––––––––––––––––––––––––––––––––––––––––––
+//	MIXINS
+
+/*
+ * Quickly arrange child elements using flex.
+ *
+ *	@param($direction, $distribution)
+ *
+ *		$direction: Sets the axis the items are aligned to.
+ *			[v, vertical, c, column | h, horizontal, r, row]  (!optional - default = v)
+ *			... amounts to `flex-direction:` ...
+ *
+ *		$distribution: Sets how items are arranged along main axis.
+ *			[c, center | sa, a, space-around | sb, b, space-between]  (!optional - default = c)
+ *			... sets the `justify-content:` property...
+ *
+ *	[Example Usage:]
+ *
+ *  .class {
+ *		@include flexArrange(vertical, sa);
+ *  }	
+ *
+ *	---OUTPUTS TO:
+ *
+ *	.class {
+ * 		display: flex;
+ * 		align-items: center;
+ * 		align-content: center;
+ * 		flex-direction: column;
+ * 		justify-content: space-around;
+ *      }
+ */
+
+@mixin flexArrange($direction: v, $distribution: c) {
+	// set the constants
+	display: flex;
+	align-items: center;
+	align-content: center;
+	// Set direction
+	@if($direction==v or $direction=='vertical' or $direction==column) {
+		flex-direction: column;
+	}
+	@else {
+		flex-direction: row;
+	}
+	// Set content distribution
+	@if($distribution==c or $distribution==center) {
+		justify-content: center;
+	}
+	@else if($distribution==s or $distribution==sa or $distribution==space-around) {
+		justify-content: space-around;
+	}
+	@else {
+		justify-content: space-between;
+	}
+}
+
+
+/*
+ * Set to fullscree size mixin
+ *
+ *	@param ($exactHeight: false)
+ *
+ *		$exactHeight: [true | false ] -
+ *			Whether or not the element must only be the exact height of
+ *			the window, and no more.
+ *			(!Optional) default = false
+ *			... if false, `min-height` property is set to 100vh, so element can be taller
+ *				than the window and must only be at least that tall.
+ *			... if true, `height` property is set to 100vh, so the element must be
+ *				EXACTLY the height of the window, NO MORE, NO LESS.
+ */
+
+@mixin fullscreen($exactHeight: false) {
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	@if($exactHeight==true) {
+		height: 100vh;
+	}
+	@else {
+		min-height: 100vh;
+	}
+}
+
+
+/*
+ *	Set margins/and/or/paddings to zero
+ *
+ *	@param($marginPadding: both)
+ *
+ *		$marginPadding: [ m, margin | p, padding | b, both]  - (!Optional: default=both)
+ *			...Sets which of the two (margins, padding, or both) to be set to zero.
+ */
+
+@mixin noMarginPadding($marginPadding: both) {
+	@if($marginPadding==m or $marginPadding==margin) {
+		margin: 0;
+	}
+	@else if($marginPadding==p or $marginPadding==pading) {
+		padding: 0;
+	}
+	@else {
+		margin: 0;
+		padding: 0;
+	}
+}
+
+// –––––––––––––––––––––––––––––––––––––––––––––––––
+//	STYLES
+
+/* --- JUST FOR DEMO PURPOSES --- */
+
+.demo-container {
+	@include fullscreen(); // make fullscreen
+	@include flexArrange(v, sa); // arrange contents using flex to center
+	@extend %centerText; // align text and set margins
+}
+
+
+/* --- MAIN BASE STYLES --- */
+
+*,
+*::after,
+*::before {
+	box-sizing: border-box;
+}
+
+html {
+	font-size: 62.5%;
+	// disable font adjustment on iPhone and other webkit-based browsers
+	-webkit-text-size-adjust: none;
+	
+	-webkit-font-smoothing: antialiased !important;
+	-moz-osx-font-smoothing: grayscale !important;
+	text-rendering: optimizeLegibility !important;
+	
+	// -webkit-font-smoothing: auto !important;
+	// -moz-osx-font-smoothing: auto !important;
+	// text-rendering: auto !important;
+	// appearance: none !important;
+	
+	// Adjust font-size on a few screen sizes
+	@include mq($until: 480px) {
+		font-size: 50%;
+	}
+	@include mq($from: 1000px) {
+		font-size: 70%;
+	}
+}
+
+body {
+	font: {
+		size: 1.6rem;
+		family: 'Avenir Next', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	}
+	line-height: 1.5;
+}
+
+// Headings
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-weight: 700;
+	line-height: 1.5;
+	letter-spacing: -1px;
+}
+
+h1 {
+	font-size: modular-scale(4);
+}
+
+h2 {
+	font-size: modular-scale(3);
+}
+
+h3 {
+	font-size: modular-scale(2);
+}
+
+h4 {
+	font-size: modular-scale(1);
+	font-weight: 400;
+	letter-spacing: normal;
+}
+
+h5 {
+	font-size: modular-scale(0);
+	font-weight: 300;
+	letter-spacing: normal;
+}
+
+h6 {
+	font-size: modular-scale(-1);
+	font-weight: 700;
+	letter-spacing: normal;
+	color: darkgray;
+}
+
+a {
+	text-decoration: none;
+}
+
+img,
+embed,
+object,
+video,
+svg {
+	max-width: 100%;
+}
+
+input,
+textarea {
+	font-family: inherit;
+	font-size: 1.6rem;
+}
+
+.container {
+	/* this class is used to give a max-width to the element it is applied to, 
+	and center it horizontally when it reaches that max-width */
+	width: 90%;
+	max-width: 1170px;
+	margin: 0 auto;
+	@include clearfix;
+}
+
+//=================================================================
+
+/* --- FOR THIS PEN --- */
+
+//	VARIABLES
+//	–––––––––––––––––––––––––––––––––––––––––––
+$button_base-color: #31BCC9;
+$button_text-color: #fff;
+$global_border-radius: 3px;
+$global_transition: all 200ms;
+$global_navbar-link-active-color: #269dad;
+//	SECTION
+//	–––––––––––––––––––––––––––––––––––––––––––
+section {
+	min-height: 50vh;
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	margin-bottom: 10rem;
+	.container {
+		header {
+			h1,
+			h2,
+			h3,
+			h4,
+			h5,
+			h6 {
+				text-align: left;
+				width: 100%;
+				color: shade(#a4b3b7, 20%);
+				margin-bottom: 2rem;
+				font-weight: 600;
+			}
+			p {
+				margin-top: -1rem;
+				margin-bottom: 3rem;
+				text-align: left;
+				font-size: 1.125rem;
+				color: #4d5c65;
+			}
+		}
+	}
+}
+
+section:nth-child(odd) {
+	background: #f2f6f7;
+}
+
+#section__header {
+	background: #d6e1e4;
+	width: 100%;
+	height: 100vh;
+	margin-bottom: 0;
+	@include flexArrange(v, c);
+	.container {
+		@include flexArrange(v, c);
+		h1,
+		h2,
+		h3,
+		h4,
+		h5,
+		h6 {
+			margin: 0;
+			color: rgba(#1d2e36, 0.8);
+		}
+	}
+}
+
+#section__links {
+	text-align: center;
+	margin: auto;
+	margin-bottom: 5rem;
+	.container {
+		text-align: center;
+		margin: auto;
+		ul {
+			text-align: center;
+			margin: auto;
+			li {
+				text-align: center;
+				margin: auto;
+			}
+		}
+	}
+}
+
+#section__buttons {
+	min-height: initial;
+	.container {
+		.unstyled-list {
+			padding: 0;
+			margin-bottom: 0;
+		}
+	}
+	padding-bottom: 0;
+}
+#section__links {
+	min-height: initial;
+	padding-bottom: 8rem;
+	padding-top: 2rem;
+}
+
+#section__footers {
+	margin-bottom: 0;
+}
+
+//	BUTTON PLACEHOLDER STYLES 
+// 	–––––––––––––––––––––––––––––––––––––––––––
+%button {
+	appearence: none;
+	// padding: 1rem 2rem 0.7rem;
+	padding: 1.3rem 2rem 1.1rem;
+	background: $button_base-color;
+	border: $button_base-color solid 1px;
+	color: $button_text-color;
+	border-radius: $global_border-radius;
+	display: block;
+	transition: $global_transition;
+	cursor: pointer;
+	font-weight: 600;
+	&:hover,
+	&:focus {
+		$state-color: shade($button_base-color, 15%);
+		background: $state-color;
+		border-color: $state-color;
+		outline: none;
+	}
+	&:active {
+		outline: none;
+		background: #1D2E36;
+		border-color: #1D2E36;
+		@include transform(scale(0.98));
+	}
+	@include mq(480px) {
+		min-width: 120px;
+	}
+}
+
+//	ASSIGN BUTTON STYLES 
+// 	–––––––––––––––––––––––––––––––––––––––––––
+button,
+input[type=submit] {
+	@extend %button;
+}
+
+.outline {
+	background: transparent;
+	color: $button_base-color;
+	font-weight: 500;
+	&:hover,
+	&:focus {
+		$state-color: shade($button_base-color, 15%);
+		background: transparent;
+		color: $state-color;
+		border-color: $state-color;
+		outline: none;
+	}
+	&:active {
+		outline: none;
+		background: transparent;
+		color: #1D2E36;
+		border-color: #1D2E36;
+		@include transform(scale(0.98));
+	}
+}
+
+.button-group {
+	list-style: none;
+	@include flexArrange(h, s);
+	justify-content: flex-start;
+	text-align: left;
+	padding: 0;
+	margin-left: 0;
+	ul {
+		text-align: left;
+		margin-left: 0;
+	}
+	li {
+		list-style: none;
+		margin-right: 2rem;
+		button {
+			margin: 0;
+		}
+	}
+}
+
+//	LINK STYLES
+//	–––––––––––––––––––––––––––––––––––––––––––
+a {
+	appearence: none;
+	cursor: pointer;
+	transition: $global_transition;
+	color: $button_base-color;
+	&:link {
+		color: $button_base-color;
+	}
+	&:visted {
+		color: $button_base-color;
+	}
+	&:hover,
+	&:focus {
+		outline: none;
+		color: shade($button_base-color, 15%);
+	}
+	&:active {
+		outline: none;
+		color: #1d2e36;
+	}
+}
+
+//	NAVBAR STYLES
+//	–––––––––––––––––––––––––––––––––––––––––––
+nav {
+	list-style: none;
+	// border: green solid thin;
+	// width: auto;
+	// text-align: right;
+	margin: auto;
+	background: #1d2e36;
+	min-height: 80px;
+	vertical-align: middle;
+	@include flexArrange();
+	// justify-content: flex-end;
+	// align-content: stretch;
+	// align-content: flex-end;
+	align-items: flex-end;
+	// align-content: stretch;
+	ul {
+		vertical-align: middle;
+		list-style: inherit;
+		// border: red solid thin;
+		// text-align: center;
+		// margin: auto;
+		// padding: 0;
+		width: 100%;
+		// display: inline;
+		// text-align: right;
+		display: flex;
+		flex-direction: row;
+		justify-content: flex-end;
+		text-align: right;
+		margin: auto 2rem auto auto !important;
+		li {
+			vertical-align: middle;
+			// display: inline-block;
+			text-align: right !important;
+			// margin: 1rem 3rem 1rem 1rem !important;
+			margin-right: 2rem !important;
+			padding: 0;
+			list-style: inherit;
+			// border: blue solid thick;
+			width: auto;
+			a {
+				vertical-align: middle;
+				// text-align: center;
+				// margin: auto;
+				// padding: 0;
+				// margin: 5rem;
+				// border: red solid thin;
+				text-align: center !important;
+				margin: auto !important;
+			}
+		}
+	}
+}
+
+.true-nav {
+	position: fixed;
+	z-index: 5;
+	top: 0;
+	left: 0;
+	width: 100%;
+	margin: 0;
+	background: #1f2e36;
+	padding-right: 5rem;
+	font-weight: 500;
+	ul {
+		li {
+			margin-left: 2rem !important;
+			a {
+				color: white;
+				font-weight: 600;
+			}
+		}
+	}
+}
+
+.active {
+	color: #269dad !important;
+}
+
+//	LIST STYLES
+//	–––––––––––––––––––––––––––––––––––––––––––
+.unstyled-list {
+	list-style: none;
+	text-decoration: none;
+	li {
+		list-style: none;
+		text-decoration: none;
+		margin-bottom: 1rem;
+	}
+}
+
+.horizontal-list {
+	@extend .unstyled-list;
+	@include flexArrange(h, s);
+	text-align: center;
+	margin: auto;
+	padding: 0;
+}
+
+//	INPUT STYLES (FORM STYLES)
+//	–––––––––––––––––––––––––––––––––––––––––––
+#{$all-text-inputs} {
+	// width: 320px;
+	@include calc(width, "50% - 1rem");
+	display: inline;
+	height: 48px;
+	line-height: 1.5;
+	border: 1px solid #d6e1e4;
+	color: #1c2e36;
+	padding: 3px 15px 0;
+	margin: 0;
+	border-radius: $global_border-radius;
+	transition: $global_transition;
+	@include placeholder {
+		font-weight: 300;
+	}
+	&:hover {
+		// border-color: tint(#3bc8d5, 50%);
+	}
+	&:focus {
+		outline: none;
+		background: #f2f6f7;
+	}
+	@incude mq($until: 480px) {
+		height: 10% !important;
+		max-height: 36px !important;
+		padding: 0 15px 0 !important;
+	}
+}
+
+textarea {
+	resize: none;
+	width: 100%;
+	height: 100%;
+	padding: 15px 15px 0 !important;
+	margin: 0;
+}
+
+fieldset {
+	@include mq($until: 480px) {
+		margin-top: 0;
+		margin-bottom: 0;
+	}
+	border: none;
+	padding: 0;
+	margin: 2rem 0;
+}
+
+input[type=text] {
+	float: left;
+}
+
+input[type=email] {
+	float: right;
+}
+
+input[type=text],
+input[type=email] {
+	@include mq($until: 480px) {
+		width: 100%;
+		display: block;
+		float: none;
+		margin-bottom: 1rem;
+		height: 36px !important;
+	}
+}
+
+input[type=submit] {
+	margin-top: 0;
+	@include mq($until: 480px) {
+		margin-top: 1rem;
+		width: 100%;
+	}
+}
+
+form {
+	margin: 2rem auto;
+	width: 90%;
+	@include mq($until: 480px) {
+		width: 100%;
+		// max-width: 600px;
+	}
+	@include mq($from: 1000px) {
+		width: 80%;
+		max-width: 600px;
+	}
+}
+
+//	TEXT
+//	–––––––––––––––––––––––––––––––––––––––––––
+#section__typography {
+	padding-bottom: 1rem !important;
+	padding-top: 1rem !important;
+	.container {
+		p {
+			text-align: left;
+			color: #1d2e36;
+			// line-height: 1.5;
+		}
+		h1,
+		h2,
+		h3,
+		h4,
+		h5,
+		h6 {
+			text-align: left;
+			color: #1d2e36;
+		}
+		h1 {
+			margin-top: 0;
+			line-height: 1;
+			margin-bottom: 0;
+		}
+		
+		header {
+			h3 {
+				color: shade(#a4b3b7, 20%) !important;
+				font-weight: 600 !important;
+			}
+		}
+	}
+	margin-bottom: 0;
+}
+
+.detail-text {
+	margin-top: 2rem;
+	margin-bottom: 4rem;
+	font-size: 1.125rem;
+	color: #a4b3b8 !important;
+	font-style: italic;
+}
+
+//	FOOTERS
+//	–––––––––––––––––––––––––––––––––––––––––––
+footer {
+	background: #4d5c65;
+	color: white;
+	padding: 2rem 0;
+	text-align: center;
+	@include flexArrange(v, c);
+	p {
+		font-size: 1.125rem;
+		line-height: 1;
+		margin: 0 auto;
+		text-align: center;
+	}
+}
+
+//	_ STYLES
+//	–––––––––––––––––––––––––––––––––––––––––––
